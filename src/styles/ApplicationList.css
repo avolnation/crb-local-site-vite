@@ -1,0 +1,81 @@
+.application-form-application-list {
+    background-color: #f5f5f5;
+    padding: 40px 20px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  
+  .application-form-header {
+    margin-bottom: 40px;
+  }
+  
+  .application-form-header h1 {
+    font-size: 2.5em;
+    margin: 0 0 10px 0;
+    color: #212121;
+  }
+  
+  .application-form-header p {
+    font-size: 1.2em;
+    margin: 0;
+    color: #757575;
+  }
+  
+  .application-form-card {
+    width: 800px;
+    max-width: 100%;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .application-form-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .application-form-table th,
+  .application-form-table td {
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    text-align: left;
+  }
+  
+  .application-form-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+  }
+  
+  .application-form-back-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: #2196F3;
+    text-decoration: none;
+    font-size: 0.9em;
+  }
+  
+  .application-form-back-link:hover {
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 600px) {
+    .application-form-card {
+      width: 100%;
+      min-height: 400px;
+    }
+  
+    .application-form-table {
+      font-size: 0.9em;
+    }
+  }

@@ -1,0 +1,317 @@
+.form-application-form {
+    background-color: #f5f5f5;
+    padding: 40px 20px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  
+  .form-header {
+    margin-bottom: 40px;
+  }
+  
+  .form-header h1 {
+    font-size: 2.5em;
+    margin: 0 0 10px 0;
+    color: #212121;
+  }
+  
+  .form-header p {
+    font-size: 1.2em;
+    margin: 0;
+    color: #757575;
+  }
+  
+  .form-card {
+    width: 600px;
+    max-width: 100%;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    min-height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .form-card-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .form-card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 1.5em;
+    flex-shrink: 0;
+  }
+  
+  .form-card-text {
+    text-align: left;
+    flex: 1;
+    box-sizing: border-box;
+  }
+  
+  .form-form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-form-group label {
+    display: block;
+    font-size: 1em;
+    color: #212121;
+    margin-bottom: 5px;
+  }
+  
+  .form-form-group input,
+  .form-form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 16px;
+    resize: vertical;
+    box-sizing: border-box;
+  }
+  
+  .form-form-group textarea {
+    min-height: 100px;
+  }
+  
+  .form-card-button {
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 16px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: color 0.3s ease, border-color 0.3s ease;
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  .form-card-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* .form-card-button:hover {
+    color: #1976D2;
+    border-color: #90A4AE;
+  } */
+  
+  .form-arrow {
+    font-size: 1.2em;
+  }
+  
+  .form-back-link {
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 16px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: color 0.3s ease, border-color 0.3s ease;
+    margin-top: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 39px;
+    text-decoration: none;
+  }
+  
+  .form-back-link:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  /* Стили для модального окна с префиксом form- */
+  .form-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .form-modal-content {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    max-width: 400px;
+    width: 90%;
+  }
+  
+  .form-modal-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5em;
+    flex-shrink: 0;
+  }
+  
+  .form-modal-text {
+    text-align: left;
+  }
+  
+  .form-modal-text h2 {
+    font-size: 1.5em;
+    margin: 0 0 10px 0;
+    color: #212121;
+  }
+  
+  .form-modal-text p {
+    font-size: 1em;
+    margin: 0;
+    color: #757575;
+  }
+  
+  @media (max-width: 600px) {
+    .form-card {
+      width: 100%;
+      min-height: 400px;
+    }
+  
+    .form-card-content {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .form-card-icon {
+      margin-bottom: 10px;
+    }
+  
+    .form-modal-content {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .form-modal-icon {
+      margin-bottom: 10px;
+    }
+  }
+
+/* Стили для модального окна с анимацией */
+.form-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0; /* Начальная прозрачность */
+  visibility: hidden; /* Скрыто по умолчанию */
+  transition: opacity 0.3s ease-in-out; /* Плавный переход только для opacity */
+}
+
+.form-modal-overlay.active {
+  opacity: 1; /* Полная видимость */
+  visibility: visible; /* Показываем */
+}
+
+.form-modal-overlay.closing {
+  opacity: 0; /* Прозрачность уменьшается */
+  visibility: hidden; /* Скрываем после анимации */
+}
+
+.form-modal-content {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  max-width: 400px;
+  width: 90%;
+}
+
+.form-modal-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5em;
+  flex-shrink: 0;
+}
+
+.form-modal-text {
+  text-align: left;
+}
+
+.form-modal-text h2 {
+  font-size: 1.5em;
+  margin: 0 0 10px 0;
+  color: #212121;
+}
+
+.form-modal-text p {
+  font-size: 1em;
+  margin: 0;
+  color: #757575;
+}
+
+@media (max-width: 600px) {
+  .form-card {
+    width: 100%;
+    min-height: 400px;
+  }
+
+  .form-card-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .form-card-icon {
+    margin-bottom: 10px;
+  }
+
+  .form-modal-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .form-modal-icon {
+    margin-bottom: 10px;
+  }
+}

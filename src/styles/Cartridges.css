@@ -1,0 +1,396 @@
+body {
+    overflow-y: hidden;
+}
+
+.form-cartridge-issue {
+    background-color: #f5f5f5;
+    padding: 40px 20px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.form-header {
+    margin-bottom: 40px;
+}
+
+.form-header h1 {
+    font-size: 2.5em;
+    margin: 0 0 10px 0;
+    color: #212121;
+}
+
+.form-header p {
+    font-size: 1.2em;
+    margin: 0;
+    color: #757575;
+}
+
+.form-card {
+    min-width: fit-content;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    /* min-height: 500px; */
+    display: flex;
+    flex-direction: column;
+}
+
+.ant-select-selector {
+    width: 100% !important;
+}
+
+.form-card-content {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.form-issue-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    flex-shrink: 0;
+}
+
+.form-issue-form-submit-button {
+    background-color: #4CAF50;
+}
+
+.form-issue-form-submit-button:hover {
+    background-color: #3e8d42 !important;
+}
+
+.form-issue-form-clarification-button {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.form-issue-form-clarification-button:hover {
+    border-color: #4CAF50 !important;
+    color: #4CAF50 !important;
+}
+
+.form-form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-form-group #cartridgeId {
+    width: 100%;
+}
+
+.form-form-group label {
+    display: block;
+    font-size: 1em;
+    color: #212121;
+    margin-bottom: 5px;
+}
+
+.form-form-group input,
+.form-form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+.form-card-button {
+    background-color: transparent;
+    border: 1px dashed #B0BEC5;
+    border-radius: 20px;
+    padding: 8px 16px;
+    color: #2196F3;
+    font-size: 0.9em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.3s ease, border-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.form-card-button:hover {
+    color: #1976D2;
+    border-color: #90A4AE;
+}
+
+.form-arrow {
+    font-size: 1.2em;
+}
+
+.form-issue-table h3 {
+    margin: 0 0 10px 0;
+    color: #212121;
+}
+
+.form-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.form-table th,
+.form-table td {
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    text-align: left;
+}
+
+.form-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+.form-back-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: #FFF;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+/* Модальное окно */
+.form-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.form-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.form-modal-overlay.closing {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.form-modal-content {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    max-width: 400px;
+    width: 90%;
+}
+
+.form-modal-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5em;
+    flex-shrink: 0;
+}
+
+.form-modal-text {
+    text-align: left;
+}
+
+.form-modal-text h2 {
+    font-size: 1.5em;
+    margin: 0 0 10px 0;
+    color: #212121;
+}
+
+.form-modal-text p {
+    font-size: 1em;
+    margin: 0;
+    color: #757575;
+}
+
+.form-issue-table {
+    max-height: 360px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: auto;
+    max-width: 100%;
+    /* display: inline-block; */
+}
+
+.form-issue-table::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome */
+}
+
+.form-issue-table .ant-table {
+    max-height: 250px;
+    width: auto !important;
+    /* Отключаем растяжку */
+    display: table !important;
+}
+
+.form-issue-table .ant-table-container {
+    width: auto !important;
+    /* Отключаем растяжку контейнера */
+}
+
+.form-issue-table .ant-table-content {
+    width: auto !important;
+    /* Отключаем растяжку содержимого */
+    display: table !important;
+}
+
+.form-issue-table .ant-table-thead>tr>th,
+.form-issue-table .ant-table-tbody>tr>td {
+    padding: 8px;
+    height: 40px;
+    min-width: 120px;
+    /* Минимальная ширина колонок */
+    max-width: 200px;
+    /* Максимальная ширина колонок */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ant-table-wrapper .ant-table-thead>tr>th {
+    background-color: #4CAF50;
+    color: white;
+    opacity: 1;
+}
+
+.form-issue-table .ant-table-thead {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-checked:not(.ant-checkbox-disabled) .ant-checkbox-inner {
+    background-color: #77bb7a !important;
+}
+
+.ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-inner,
+.ant-checkbox:not(.ant-checkbox-disabled):hover .ant-checkbox-inner {
+    border-color: #4CAF50;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.form-issue-table-and-search {
+    display: flex;
+    height: 442px;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.form-issue-table-and-search input {
+    min-height: 70px;
+    margin-top: 10px;
+    max-width: 100% !important;
+    font-size: 20px;
+}
+.ant-input-outlined:hover {
+    border-color: #77bb7a;
+}
+
+.ant-input-outlined:focus, .ant-input-outlined:focus-within {
+    border-color: #4CAF50 
+}
+
+@media (max-width: 600px) {
+    .form-card {
+        width: 100%;
+        /* min-height: 400px; */
+    }
+
+    .form-issue-form,
+    .form-issue-table {
+        width: 100%;
+        flex-shrink: 0;
+    }
+
+    .form-issue-actions-button {
+        background-color: #4CAF50;
+        display: inline-block;
+        margin-top: 10px;
+        color: #2196F3;
+        text-decoration: none;
+        font-size: 0.9em;
+    }
+
+    .form-table {
+        font-size: 0.9em;
+    }
+
+    .form-modal-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .form-modal-icon {
+        margin-bottom: 10px;
+    }
+
+    .ant-dropdown-menu {
+        min-width: 150px;
+    }
+
+    .ant-dropdown-menu-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .form-issue-table {
+        max-height: 250px;
+        overflow-y: auto;
+        width: auto;
+        max-width: 100%;
+        display: inline-block;
+    }
+
+    .form-issue-table .ant-table {
+        max-height: 250px;
+        width: auto !important;
+        display: table !important;
+    }
+
+    .form-issue-table .ant-table-container {
+        width: auto !important;
+    }
+
+    .form-issue-table .ant-table-content {
+        width: auto !important;
+        display: table !important;
+    }
+
+    .form-issue-table .ant-table-tbody>tr>td,
+    .form-issue-table .ant-table-thead>tr>th {
+        padding: 8px;
+        height: 40px;
+        min-width: 100px;
+        max-width: 150px;
+    }
+}

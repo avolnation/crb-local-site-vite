@@ -1,0 +1,9 @@
+.main-page-buttons {
+    margin: 0 auto;
+    background-color: chocolate;
+    padding: 10px 20px;
+    border-radius: 15px;
+}
+.main-page-buttons-title {
+    display: block;
+}
