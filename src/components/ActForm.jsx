@@ -1,82 +1,64 @@
 import { useState } from "react";
+import { Button, DatePicker, Form, Input, Space, Typography, Row, Col, Divider, Popconfirm } from "antd";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { saveAs } from "file-saver";
-import {
-    Document,
-    Packer,
-    Paragraph,
-    Table,
-    TableCell,
-    TableRow,
-    TextRun,
-    AlignmentType,
-} from "docx";
+import { Document, Packer, Paragraph, Table, TableCell, TableRow, TextRun, AlignmentType } from "docx";
+import moment from "moment";
+import "moment/dist/locale/ru";
 
-import moment from 'moment'
-import 'moment/dist/locale/ru'
-
+const { Title } = Typography;
 
 const WriteOffAct = () => {
-    const [department, setDepartment] = useState("");
-    const [date, setDate] = useState("");
-    const [members, setMembers] = useState(["", "", ""]);
-    const [accountablePerson, setAccountablePerson] = useState("");
-    const [materials, setMaterials] = useState([
-        { name: "", quantity: "", price: "", total: "", note: "" },
-    ]);
+    const [date, setDate] = useState(null);
+    const [materials, setMaterials] = useState([{ name: "", quantity: "", price: "", total: "", note: "" }]);
+    const [members, setMembers] = useState([{ position: "", name: "" }, { position: "", name: "" }, { position: "", name: "" }]);
+
+    const addMaterial = () => setMaterials([...materials, { name: "", quantity: "", price: "", total: "", note: "" }]);
+    const removeMaterial = (index) => {
+        const updated = [...materials];
+        updated.splice(index, 1);
+        setMaterials(updated);
+    };
+
+    const handleMaterialChange = (index, field, value) => {
+        const updated = [...materials];
+        updated[index][field] = value;
+        setMaterials(updated);
+    };
+
+    const handleMemberChange = (index, field, value) => {
+        const updated = [...members];
+        updated[index][field] = value;
+        setMembers(updated);
+    };
 
     const generateDoc = async () => {
-        // Ensure at least 11 rows in the table
         const minRows = 10;
         let tableData = [...materials];
-
-        // If fewer than 11 rows, add empty rows to reach 11
-        if (materials.length < minRows) {
-            const emptyRows = Array(minRows - materials.length).fill({
-                name: "",
-                quantity: "",
-                price: "",
-                total: "",
-                note: "",
+        if (tableData.length < minRows) {
+            const emptyRows = Array(minRows - tableData.length).fill({
+                name: "", quantity: "", price: "", total: "", note: ""
             });
-            tableData = [...materials, ...emptyRows];
+            tableData = [...tableData, ...emptyRows];
         }
 
         const tableRows = [
             new TableRow({
-                children: [
-                    "№ п/п",
-                    "Наименование материала",
-                    "Кол-во",
-                    "Цена",
-                    "Сумма",
-                    "Примечание",
-                ].map(
+                children: ["№ п/п", "Наименование материала", "Кол-во", "Цена", "Сумма", "Примечание"].map(
                     (text) =>
                         new TableCell({
-                            children: [
-                                new Paragraph({
-                                    children: [new TextRun({ text, bold: true })],
-                                    alignment: AlignmentType.CENTER,
-                                    size: 24,
-                                }),
-                            ],
-
+                            children: [new Paragraph({ children: [new TextRun({ text, bold: true })], alignment: AlignmentType.CENTER })],
                         })
                 ),
             }),
             ...tableData.map((mat, idx) =>
                 new TableRow({
                     children: [
-                        `${idx + 1}`, // Row number always increments
-                        mat.name,
-                        mat.quantity,
-                        mat.price,
-                        mat.total,
-                        mat.note,
+                        `${idx + 1}`, mat.name, mat.quantity, mat.price, mat.total, mat.note,
                     ].map(
                         (text) =>
                             new TableCell({
-                                children: [new Paragraph({ text, alignment: AlignmentType.CENTER })],
+                                children: [new Paragraph({ text: text || "", alignment: AlignmentType.CENTER })],
                             })
                     ),
                 })
@@ -87,186 +69,114 @@ const WriteOffAct = () => {
             styles: {
                 default: {
                     document: {
-                        run: {
-                            size: 28,
-                        }
-                    }
-                }
+                        run: { size: 28 },
+                    },
+                },
             },
             sections: [
                 {
                     children: [
+                        new Paragraph({ children: [new TextRun({ text: "УЗ «Буда-Кошелевская ЦРБ»", bold: true })], alignment: AlignmentType.LEFT }),
+                        new Paragraph({ children: [new TextRun("УТВЕРЖДАЮ:")], alignment: AlignmentType.RIGHT }),
+                        new Paragraph({ text: "_________________________", alignment: AlignmentType.RIGHT, spacing: { before: 100 } }),
                         new Paragraph({
-                            children: [
-                                new TextRun({
-                                    text: "УЗ «Буда-Кошелевская ЦРБ»",
-                                    bold: true,
-                                }),
-                            ],
-                            alignment: AlignmentType.LEFT,
-                        }),
-                        new Paragraph({
-                            children: [
-                                new TextRun({
-                                    text: "УТВЕРЖДАЮ:			",
-                                }),
-                            ],
+                            children: [new TextRun({ text: "подпись, Ф.И.О.", italics: true, size: 20 })],
                             alignment: AlignmentType.RIGHT,
                         }),
+                        new Paragraph({ text: "«__» __________ 20__ г.", alignment: AlignmentType.RIGHT, spacing: { after: 200 } }),
+                        new Paragraph({ children: [new TextRun({ text: "АКТ", bold: true })], alignment: AlignmentType.CENTER }),
+                        new Paragraph({ children: [new TextRun({ text: "О СПИСАНИИ МАТЕРИАЛОВ", bold: true })], alignment: AlignmentType.CENTER, spacing: { after: 200 } }),
                         new Paragraph({
-                            text: "_________________________",
-                            alignment: AlignmentType.RIGHT,
-                            spacing: { before: 100 },
-                        }),
-                        new Paragraph({
-                            children: [
-                                new TextRun({
-                                    text: "подпись, Ф.И.О..		",
-                                    italics: true,
-                                    size: 20,
-                                }),
-                            ],
-                            alignment: AlignmentType.RIGHT,
-                        }),
-                        new Paragraph({
-                            text: "«__» __________ 20__ г.	",
-                            alignment: AlignmentType.RIGHT,
-                            spacing: { after: 200 },
-                        }),
-                        new Paragraph({
-                            children: [
-                                new TextRun({
-                                    text: "АКТ",
-                                    bold: true,
-                                }),
-                            ],
-                            alignment: AlignmentType.CENTER,
-                        }),
-                        new Paragraph({
-                            children: [
-                                new TextRun({
-                                    text: "О СПИСАНИИ МАТЕРИАЛОВ",
-                                    bold: true,
-                                }),
-                            ],
-                            alignment: AlignmentType.CENTER,
-                            spacing: { after: 200 },
-                        }),
-                        new Paragraph({
-                            text: `за ${moment(Date.parse(date)).locale('ru').format('LL').toString()}`,
+                            text: `за ${moment(date).locale("ru").format("LL")}`,
                             alignment: AlignmentType.CENTER,
                             spacing: { after: 400 },
                         }),
-                        new Paragraph({
-                            children: [
-                                new TextRun({
-                                    text: "Мы, нижеподписавшиеся, комиссия в составе:",
-                                }),
-                            ],
-                            spacing: { after: 200 },
-                        }),
-                        new Paragraph({
-                            children: [
-                                new TextRun({
-                                    text: "________________________________________________________________",
-                                }),
-                            ],
-
-                        }),
-                        new Paragraph({
-                            children: [
-                                new TextRun({
-                                    text: "должность, Ф.И.О.",
-                                    italics: true,
-                                    size: 20,
-                                }),
-                            ],
-                            alignment: AlignmentType.CENTER,
-                        }),
-
-                        new Paragraph({
-                            children: [
-                                new TextRun({
-                                    text: "________________________________________________________________",
-                                }),
-                            ],
-                            spacing: { after: 200 },
-                        }),
-                        new Paragraph({
-                            children: [
-                                new TextRun({
-                                    text: "________________________________________________________________",
-                                }),
-                            ],
-                        }),
-
+                        new Paragraph({ children: [new TextRun("Мы, нижеподписавшиеся, комиссия в составе:")], spacing: { after: 200 } }),
+                        ...members.flatMap((m) => [
+                            new Paragraph({ text: `${m.position || "____________________"} - ${m.name || "____________________"}` }),
+                        ]),
                         new Paragraph({
                             text: `Составили настоящий акт на списание следующих материалов в отделении: ______________________________________________________`,
                             spacing: { before: 200, after: 200 },
                         }),
+                        new Table({ rows: tableRows, width: { size: 100, type: "pct" } }),
+                        new Paragraph({
+                            children: [
+                                new TextRun("Акт составлен для снятия с подотчета "),
+                                new TextRun({ text: "заведующего сектором АСУ, Кутукина А.С.", italics: true, bold: true }),
+                            ],
+                            spacing: { before: 200 },
+                        }),
+                        new Paragraph({ text: "Комиссия:", spacing: { before: 400 } }),
+
                         new Table({
-                            rows: tableRows,
-                            width: {
-                                size: 100,
-                                type: "pct",
+                            width: { size: 100, type: "pct" },
+                            borders: {
+                                top: { style: "none", size: 0, color: "FFFFFF" },
+                                bottom: { style: "none", size: 0, color: "FFFFFF" },
+                                left: { style: "none", size: 0, color: "FFFFFF" },
+                                right: { style: "none", size: 0, color: "FFFFFF" },
+                                insideHorizontal: { style: "none", size: 0, color: "FFFFFF" },
+                                insideVertical: { style: "none", size: 0, color: "FFFFFF" },
                             },
-                        }),
-                        new Paragraph({
-                            children: [
-                                new TextRun({
-                                    text: "Акт составлен для снятия с подотчета ",
+                            rows: members.map((m) => [
+                                new TableRow({
+                                    children: [
+                                        new TableCell({
+                                            children: [
+                                                new Paragraph({
+                                                    text: m.position || "должность",
+                                                    alignment: AlignmentType.LEFT,
+                                                }),
+                                            ],
+                                        }),
+                                        new TableCell({
+                                            children: [
+                                                new Paragraph({
+                                                    text: "_______________",
+                                                    alignment: AlignmentType.CENTER,
+                                                }),
+                                            ],
+                                        }),
+                                        new TableCell({
+                                            children: [
+                                                new Paragraph({
+                                                    text: m.name || "ФИО",
+                                                    alignment: AlignmentType.CENTER,
+                                                }),
+                                            ],
+                                        }),
+                                    ],
                                 }),
-                                new TextRun({
-                                    text: "заведующего сектором АСУ, Кутукина А.С.",
-                                    italics: true,
-                                    bold: true
+                                new TableRow({
+                                    children: [
+                                        new TableCell({
+                                            children: [
+                                                new Paragraph({
+                                                    children: [new TextRun({ text: "\t\tдолжность", italics: true, size: 20 })],
+                                                    alignment: AlignmentType.LEFT,
+                                                }),
+                                            ],
+                                        }),
+                                        new TableCell({
+                                            children: [
+                                                new Paragraph({
+                                                    children: [new TextRun({ text: "подпись", italics: true, size: 20 })],
+                                                    alignment: AlignmentType.CENTER,
+                                                }),
+                                            ],
+                                        }),
+                                        new TableCell({
+                                            children: [
+                                                new Paragraph({
+                                                    children: [new TextRun({ text: "Ф.И.О.", italics: true, size: 20 })],
+                                                    alignment: AlignmentType.CENTER,
+                                                }),
+                                            ],
+                                        }),
+                                    ],
                                 }),
-                            ],
-                            spacing: { before: 200 },
-                        }),
-                        new Paragraph({
-                            text: "Комиссия: ",
-                            spacing: { before: 400 },
-                        }),
-                        new Paragraph({
-                            text: "_______________		_______________		________________________",
-                            spacing: { before: 200 },
-                        }),
-                        new Paragraph({
-                            children: [
-                                new TextRun({
-                                    text: "          должность			 подпись				Ф.И.О.",
-                                    italics: true,
-                                    size: 20,
-                                }),
-                            ],
-                            spacing: { after: 200 },
-                        }),
-                        new Paragraph({
-                            text: "_______________		_______________		________________________",
-                            spacing: { before: 200 },
-                        }),
-                        new Paragraph({
-                            children: [
-                                new TextRun({
-                                    text: "          должность			 подпись				Ф.И.О.",
-                                    italics: true,
-                                    size: 20,
-                                }),
-                            ],
-                        }),
-                        new Paragraph({
-                            text: "_______________		_______________		________________________",
-                            spacing: { before: 200 },
-                        }),
-                        new Paragraph({
-                            children: [
-                                new TextRun({
-                                    text: "          должность			 подпись				Ф.И.О.",
-                                    italics: true,
-                                    size: 20,
-                                }),
-                            ],
+                            ]).flat(),
                         }),
                     ],
                 },
@@ -278,61 +188,80 @@ const WriteOffAct = () => {
     };
 
     return (
-        <div className="p-6 space-y-4">
-            <h1 className="text-2xl font-bold">Акт на списание материалов</h1>
-            <input
-                className="border p-2 w-full"
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-            />
-            <div>
-                <p className="font-semibold">Материалы:</p>
-                {materials.map((mat, idx) => (
-                    <div key={idx} className="grid grid-cols-6 gap-2 mb-2">
-                        {Object.keys(mat).map((key) => (
-                            <input
-                                key={key}
-                                className="border p-2"
+        <div style={{ padding: 24, maxWidth: 900, margin: "0 auto" }}>
+            <Title level={3}>Акт на списание материалов</Title>
+
+            <Form layout="vertical">
+                <Form.Item label="Дата документа">
+                    <DatePicker
+                        format="DD.MM.YYYY"
+                        style={{ width: "100%" }}
+                        value={date ? moment(date) : null}
+                        onChange={(value) => setDate(value ? value.toDate() : null)}
+                    />
+                </Form.Item>
+
+                <Divider orientation="left">Материалы</Divider>
+                {materials.map((mat, index) => (
+                    <Space key={index} style={{ display: "flex", marginBottom: 8 }} align="start">
+                        {["name", "quantity", "price", "total", "note"].map((field) => (
+                            <Input
+                                key={field}
                                 placeholder={
-                                    key === "name"
+                                    field === "name"
                                         ? "Наименование"
-                                        : key === "quantity"
+                                        : field === "quantity"
                                             ? "Кол-во"
-                                            : key === "price"
+                                            : field === "price"
                                                 ? "Цена"
-                                                : key === "total"
+                                                : field === "total"
                                                     ? "Сумма"
                                                     : "Примечание"
                                 }
-                                value={mat[key]}
-                                onChange={(e) => {
-                                    const newMaterials = [...materials];
-                                    newMaterials[idx][key] = e.target.value;
-                                    setMaterials(newMaterials);
-                                }}
+                                value={mat[field]}
+                                onChange={(e) => handleMaterialChange(index, field, e.target.value)}
+                                style={{ width: 120 }}
                             />
                         ))}
-                    </div>
+                        {materials.length > 1 && (
+                            <Popconfirm title="Удалить материал?" onConfirm={() => removeMaterial(index)}>
+                                <Button danger icon={<MinusCircleOutlined />} />
+                            </Popconfirm>
+                        )}
+                    </Space>
                 ))}
-                <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded"
-                    onClick={() =>
-                        setMaterials([
-                            ...materials,
-                            { name: "", quantity: "", price: "", total: "", note: "" },
-                        ])
-                    }
-                >
-                    + Добавить материал
-                </button>
-            </div>
-            <button
-                className="bg-green-600 text-white px-6 py-2 rounded text-lg"
-                onClick={generateDoc}
-            >
-                Сформировать документ
-            </button>
+                <Form.Item>
+                    <Button type="dashed" onClick={addMaterial} block icon={<PlusOutlined />}>
+                        Добавить материал
+                    </Button>
+                </Form.Item>
+
+                <Divider orientation="left">Члены комиссии</Divider>
+                {members.map((member, index) => (
+                    <Row gutter={8} key={index} style={{ marginBottom: 8 }}>
+                        <Col span={12}>
+                            <Input
+                                placeholder="Должность"
+                                value={member.position}
+                                onChange={(e) => handleMemberChange(index, "position", e.target.value)}
+                            />
+                        </Col>
+                        <Col span={12}>
+                            <Input
+                                placeholder="ФИО"
+                                value={member.name}
+                                onChange={(e) => handleMemberChange(index, "name", e.target.value)}
+                            />
+                        </Col>
+                    </Row>
+                ))}
+
+                <Form.Item style={{ marginTop: 24 }}>
+                    <Button type="primary" onClick={generateDoc}>
+                        Сформировать документ
+                    </Button>
+                </Form.Item>
+            </Form>
         </div>
     );
 };
